@@ -110,29 +110,30 @@
   [self viewCleanupForCollection:_yChartLabels];
 
   [self processYMaxValue];
-
-  float sectionHeight = (self.frame.size.height - _chartMarginTop - _chartMarginBottom - kXLabelHeight) / _yLabelSum;
-    
-  for (int i = 0; i <= _yLabelSum; i++) {
-    NSString *labelText;
-    if (_yLabels) {
-      float yAsixValue = [_yLabels[_yLabels.count - i - 1] floatValue];
-      labelText= _yLabelFormatter(yAsixValue);
-    } else {
-      labelText = _yLabelFormatter((float)_yValueMax * ( (_yLabelSum - i) / (float)_yLabelSum ));
-    }
-
-    PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectZero];
-    label.font = _labelFont;
-    label.textColor = _labelTextColor;
-    [label setTextAlignment:NSTextAlignmentRight];
-    label.text = [NSString stringWithFormat:@"%@%@%@", _yLabelPrefix, labelText, _yLabelSuffix];
+  if (_showYLabel) {
+      float sectionHeight = (self.frame.size.height - _chartMarginTop - _chartMarginBottom - kXLabelHeight) / _yLabelSum;
       
-    [self addSubview:label];
-      
-    label.frame = (CGRect){0, sectionHeight * i + _chartMarginTop - kYLabelHeight/2.0, _yChartLabelWidth, kYLabelHeight};
-
-    [_yChartLabels addObject:label];
+      for (int i = 0; i <= _yLabelSum; i++) {
+          NSString *labelText;
+          if (_yLabels) {
+              float yAsixValue = [_yLabels[_yLabels.count - i - 1] floatValue];
+              labelText= _yLabelFormatter(yAsixValue);
+          } else {
+              labelText = _yLabelFormatter((float)_yValueMax * ( (_yLabelSum - i) / (float)_yLabelSum ));
+          }
+          
+          PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectZero];
+          label.font = _labelFont;
+          label.textColor = _labelTextColor;
+          [label setTextAlignment:NSTextAlignmentRight];
+          label.text = [NSString stringWithFormat:@"%@%@%@", _yLabelPrefix, labelText, _yLabelSuffix];
+          
+          [self addSubview:label];
+          
+          label.frame = (CGRect){0, sectionHeight * i + _chartMarginTop - kYLabelHeight/2.0, _yChartLabelWidth, kYLabelHeight};
+          
+          [_yChartLabels addObject:label];
+      }
   }
 }
 
